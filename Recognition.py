@@ -124,16 +124,16 @@ class Recognition:
                             ARR_SCR_N_CNT[i] += 1.00
                         if ARR_IMG_N_EDIT[i][ROW][COL] == Recognition._G_:
                             ARR_SCR_N_CNT[i] += 0.50
-                        print(ARR_SCR_N_CNT) #
                     else:
                         if ARR_IMG_N_EDIT[i][ROW][COL] != Recognition._W_:
                             ARR_SCR_N_CNT[i] -= 0.75
+                    print(ARR_SCR_N_CNT) #
         #print(ARR_IMG) #
         print('---[ END: RECOGNITION ]---')
         
-        for i in range(Recognition._ALPHABET_):
-            print(f'{i}: {ARR_SCR_N_CNT[i]}') #
-        print(f'<{np.argmax(ARR_SCR_N_CNT)}>') #
+        #for i in range(Recognition._ALPHABET_):
+            #print(f'{i}: {ARR_SCR_N_CNT[i]}') #
+        print(f'\nI think your number is <{np.argmax(ARR_SCR_N_CNT)}> !') #
 
 if __name__ == '__main__':
     np.set_printoptions(linewidth=6*16)
