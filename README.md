@@ -9,3 +9,9 @@ N / A
 <code>pip install opencv-python</code>
 
 <code>pip install numpy</code>
+
+### Before running:
+Feel free to edit 'N-SAMPLE.png' with an image editor such as paint.net to draw a number of your choice (currently has a 5).
+
+### Run in CLI:
+<code>python Recognition.py</code>
