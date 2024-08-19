@@ -62,23 +62,18 @@ class Recognition:
         IMG = IMG.astype(np.float32)
         
         TOP, BOT, LEF, RIG = 0, IMG.shape[0], 0, IMG.shape[1]
-        while TOP < BOT and np.all(IMG[TOP] == Recognition._W_):
+        MIN_VER = int(0.125 * IMG.shape[1])  # remove if # black pixels is < 12.5% of ver border length
+        MIN_HOR = int(0.125 * IMG.shape[0])  # remove if # black pixels is < 12.5% of hor border length
+
+        while TOP < BOT and np.sum(IMG[TOP] == Recognition._B_) < MIN_VER:
             TOP += 1
-        while BOT > TOP and np.all(IMG[BOT - 1] == Recognition._W_):
+        while BOT > TOP and np.sum(IMG[BOT - 1] == Recognition._B_) < MIN_VER:
             BOT -= 1
-        while LEF < RIG and np.all(IMG[:, LEF] == Recognition._W_):
+        while LEF < RIG and np.sum(IMG[:, LEF] == Recognition._B_) < MIN_HOR:
             LEF += 1
-        while RIG > LEF and np.all(IMG[:, RIG - 1] == Recognition._W_):
+        while RIG > LEF and np.sum(IMG[:, RIG - 1] == Recognition._B_) < MIN_HOR:
             RIG -= 1
-        # old system to leave border around original cropped image similar to the old processed sample numbers
-        # if TOP > 0:
-            # TOP -= 1
-        # if BOT < IMG.shape[0]:
-            # BOT += 1
-        # if LEF > 0:
-            # LEF -= 1
-        # if RIG < IMG.shape[0]:
-            # RIG += 1
+
         IMG_EDIT = IMG[TOP:BOT, LEF:RIG]
         
         cv2.imwrite(f'resources\\extra\\MAIN.png', IMG_EDIT.astype(np.uint8)) ######
@@ -96,17 +91,19 @@ class Recognition:
             #cv2.imwrite(f'resources\\extra\\{i}-PRE.png', ARR_IMG_N_EDIT[i].astype(np.uint8)) ######
             
             TOP, BOT, LEF, RIG = 0, ARR_IMG_N[i].shape[0], 0, ARR_IMG_N[i].shape[1]
-            while TOP < BOT and np.all(ARR_IMG_N[i][TOP] > 180):
+            
+            while TOP < BOT and np.all(ARR_IMG_N[i][TOP] == Recognition._W_):
                 TOP += 1
-            while BOT > TOP and np.all(ARR_IMG_N[i][BOT - 1] > 180):
+            while BOT > TOP and np.all(ARR_IMG_N[i][BOT - 1] == Recognition._W_):
                 BOT -= 1
-            while LEF < RIG and np.all(ARR_IMG_N[i][:, LEF] > 180):
+            while LEF < RIG and np.all(ARR_IMG_N[i][:, LEF] == Recognition._W_):
                 LEF += 1
-            while RIG > LEF and np.all(ARR_IMG_N[i][:, RIG - 1] > 180):
+            while RIG > LEF and np.all(ARR_IMG_N[i][:, RIG - 1] == Recognition._W_):
                 RIG -= 1
+            
             ARR_IMG_N_EDIT[i] = ARR_IMG_N[i][TOP:BOT, LEF:RIG]
             
-            cv2.imwrite(f'resources\\extra\\{i}-PRE.png', ARR_IMG_N_EDIT[i].astype(np.uint8)) ######
+            #cv2.imwrite(f'resources\\extra\\{i}-TRM.png', ARR_IMG_N_EDIT[i].astype(np.uint8)) ######
             
             ARR_IMG_N_EDIT[i] = cv2.resize(ARR_IMG_N_EDIT[i], (WID, HGT), interpolation=cv2.INTER_CUBIC)
             ARR_IMG_N_EDIT[i][ARR_IMG_N_EDIT[i] <= 127] = 0
