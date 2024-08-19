@@ -70,14 +70,15 @@ class Recognition:
             LEF += 1
         while RIG > LEF and np.all(IMG[:, RIG - 1] == Recognition._W_):
             RIG -= 1
-        if TOP > 0:
-            TOP -= 1
-        if BOT < IMG.shape[0]:
-            BOT += 1
-        if LEF > 0:
-            LEF -= 1
-        if RIG < IMG.shape[0]:
-            RIG += 1
+        # old system to leave border around original cropped image similar to the old processed sample numbers
+        # if TOP > 0:
+            # TOP -= 1
+        # if BOT < IMG.shape[0]:
+            # BOT += 1
+        # if LEF > 0:
+            # LEF -= 1
+        # if RIG < IMG.shape[0]:
+            # RIG += 1
         IMG_EDIT = IMG[TOP:BOT, LEF:RIG]
         
         cv2.imwrite(f'resources\\extra\\MAIN.png', IMG_EDIT.astype(np.uint8)) ######
@@ -126,7 +127,7 @@ class Recognition:
                             ARR_SCR_N_CNT[i] += 0.50
                     else:
                         if ARR_IMG_N_EDIT[i][ROW][COL] != Recognition._W_:
-                            ARR_SCR_N_CNT[i] -= 0.75
+                            ARR_SCR_N_CNT[i] -= 0.33
                     print(ARR_SCR_N_CNT) #
         #print(ARR_IMG) #
         print('---[ END: RECOGNITION ]---')
